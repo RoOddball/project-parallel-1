@@ -1,0 +1,59 @@
+#include "ebolaHeader.h"
+
+/*********************************************
+ * sumUp: this passes in an array and its's size and loops through the values returning the count of these values for output 
+ *********************************************/
+
+int sumUp(int *array, int m){
+
+  unsigned int i,neverInfected,survivors,incubated,infected,dead,removed,subject,sick;
+  neverInfected = 0;
+  survivors = 0;
+  incubated = 0;
+  infected = 0;
+  dead = 0;
+  removed = 0;
+  
+ 
+  for(i=0;i<m*m;i++){
+
+    subject = array[i];
+    
+    if(subject<INCUBATED_TH && subject>0){
+
+      neverInfected++;
+    }
+    
+    if(subject>=IMMUNE_TH){
+
+      survivors++;
+    }
+    
+    if(subject>=INCUBATED_TH && subject<INFECTED_TH){
+
+      incubated++;
+    }
+    
+    if(subject>=INFECTED_TH && subject<DECEASED_TH){
+
+      infected++;
+    }
+    
+      if(subject>=DECEASED_TH && subject<IMMUNE_TH){
+
+	dead++;
+    }
+    
+    if(subject==0){
+
+	removed++;
+    }	
+  } 
+  
+  
+  printf(" \n\n never infected: %d \n survivors: %d \n incubated: %d \n infected: %d \n dead: %d \n removed: %d \n\n\n",neverInfected,survivors,incubated,infected,dead,removed );
+
+  sick = incubated + infected + dead;
+  
+  return sick;
+}

@@ -1,0 +1,29 @@
+#include"ebolaHeader.h" 
+/*********************************************
+ * neighborFinder: this function does....
+ *********************************************/
+
+void neighborFinder(int *neighborsInd, int row, int col, int m){
+  
+  unsigned int col_right =  mod(col+1,m);
+  unsigned int col_left = mod(m+col-1,m);
+  unsigned int row_down = mod(row+1,m);
+  unsigned int row_up = mod(m+row-1,m); 
+  
+  neighborsInd[0] = row;
+  neighborsInd[1] = col_left;
+  neighborsInd[2] = row_up;
+  neighborsInd[3] = col_left;
+  neighborsInd[4] = row_up;
+  neighborsInd[5] = col;
+  neighborsInd[6] = row_up;
+  neighborsInd[7] = col_right;
+  neighborsInd[8] = row;
+  neighborsInd[9] = col_right;
+  neighborsInd[10] = row_down;
+  neighborsInd[11] = col_right;
+  neighborsInd[12] = row_down;
+  neighborsInd[13] = col;
+  neighborsInd[14] = row_down;
+  neighborsInd[15] = col_left;
+}

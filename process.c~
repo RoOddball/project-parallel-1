@@ -1,0 +1,62 @@
+#include"ebolaHeader.h"
+
+/*********************************************
+ * populaceProcess: modifies the values in the targetArray argument by passing the values of
+the array argument through the neighborFinder and the infectNeighbor functions and also by
+ passing the targetArray 
+values through the processTheSick function
+ *********************************************/
+
+void populaceProcess(int *array, int *targetArray, int * neighborsInd, int m, int traditions,int quarantine){
+
+  int i,j,k,l,indexOne,indexTwo,mm;
+  int neighbors[8];
+  mm=m*m;
+
+  
+
+  for(i=0;i<m;i++){
+
+    for(j=0;j<m;j++){
+
+      printf("\n\n subject %d: %d ",j+i*m,targetArray[j+i*m]);
+      neighborFinder(neighborsInd,i,j,m);
+
+      for(k=0;k<8;k++){
+	    
+	indexOne = neighborsInd[2*k];
+	indexTwo = neighborsInd[2*k+1];
+
+	// int infectedNeighbor = infectNeighbors(targetArray[indexOne*m+indexTwo]);
+	//int element = targetArray[j+i*m];
+
+	int infectedNeighbor = infectNeighbors(targetArray[indexOne*m+indexTwo]);
+	int element = array[j+i*m];
+
+	if(element>0 && element<IMMUNE_TH && element>=INCUBATED_TH){
+
+	  if(quarantine==0){
+	    
+	    printf("\n--processed neighbor%d: %d",indexOne*m+indexTwo,targetArray[indexOne*m+indexTwo]);
+	    targetArray[indexOne*m+indexTwo]=infectedNeighbor;
+	    printf(" to %d ", targetArray[indexOne*m+indexTwo]);
+
+	  }else if(quarantine>0 && targetArray[j+i*m]<QUARANTINE_TH) {
+
+	    printf("\n--processed neighbor%d: %d",indexOne*m+indexTwo,targetArray[indexOne*m+indexTwo]);
+	    targetArray[indexOne*m+indexTwo]=infectedNeighbor;
+	    printf(" to %d", targetArray[indexOne*m+indexTwo]);
+	  } 
+	}
+      }
+    }
+  }
+
+  for(i=0;i<m;i++)
+    for(j=0;j<m;j++){
+
+      printf("\n\n subject %d was:%d",j+i*m,targetArray[j+i*m]);
+      targetArray[j+i*m] = processTheSick(targetArray[j+i*m],traditions);
+      printf(" -- is: %d \n",targetArray[j+i*m]);
+    }
+}

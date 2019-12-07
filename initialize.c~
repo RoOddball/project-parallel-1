@@ -1,0 +1,36 @@
+#include"ebolaHeader.h"
+/*********************************************
+ * populationInitialize: this function populates the array passed as argument with values
+and replaces the 0 from each value with a 1 if chances are
+ *********************************************/
+
+void populaceInitialize(int *array, int m){
+
+  unsigned int i,j,immunity,initialState,age;
+  
+  
+  for(i=0;i<m*m;i++){
+      if(getRandomNumberFromRange(0.0,10.0)<=1){
+
+        immunity = IMMUNE_TH;
+      }else{
+
+        immunity = 0;
+      }
+      
+      if(getRandomNumberFromRange(0.0,10.0)<=1 && immunity==0){
+
+	initialState = INCUBATED_TH;
+      }else{
+
+	initialState = 0;
+      }
+      age =  round(getRandomNumberFromRange(1,99));
+		   
+      array[i] = immunity + initialState +age;    
+      printf("\n-- subject: %d  --intialized -|- immunity is: %d -|- state is: %d -|- age is: %d --> %d ", j+i*m,immunity,initialState,age,array[i]);
+    
+  }
+  for(i=0;i<m*m;i++)
+    printf("\n populated current array subject %d: %d ",i,array[i]);
+}
