@@ -71,9 +71,9 @@ int main(){
     pthread_join(thread_handles[thread],NULL);
 
   pthread_mutex_destroy(&myLock1);
-  pthread_mutex_destroy(myLock2);
-  pthread_mutex_destroy(myLock3);
-  pthread_mutex_destroy(myLock4);
+  pthread_mutex_destroy(&myLock2);
+  pthread_mutex_destroy(&myLock3);
+  pthread_mutex_destroy(&myLock4);
   free(thread_handles);
   for(i=0;i<m;i++){
 
