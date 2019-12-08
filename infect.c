@@ -5,15 +5,15 @@
 random chance added to 100 or ignored
  *********************************************/
 
-int infectNeighbors(int neighbor){
+int infectNeighbors(int* neighbor){
   
   
-  if(neighbor<IMMUNE_TH && neighbor>0 && neighbor<INCUBATED_TH){
+  if((int)neighbor<IMMUNE_TH && neighbor>0 && (int)neighbor<INCUBATED_TH){
 
-    if(getRandomNumberFromRange(0.0,resistance(neighbor))<=1){
+    if(getRandomNumberFromRange(0.0,resistance((int)neighbor))<=1){
 
       neighbor = neighbor+COUNTER_TO_STATE;
     }
   }
-  return neighbor;
+  return (int)neighbor;
 }

@@ -11,23 +11,12 @@
 #define DECEASED_TH 600
 #define REMOVED_TH 900
 float getRandomNumberFromRange(float, float);
-void neighborFinder(int*,int,int);
-int mod(int,int);
-void populaceInitialize(int*,int);
-void populaceProcess(int*,int*,int*,int,int,int,int,int);
-void populaceUpdate(int**,int**,int);
-int infectNeighbors(int);
-int processTheSick(int,int);
-int sumUp(int*,int,int);
-int resistance(int);
 void* childTurn(void*);
 int threadCount;
 int** currSubjects;
-int** futSubjects;
-int** neighborsInd;
 int m;
 int turn;
-int mainTurnSwitch;
+int turnCount;
 int traditions;
 int quarantine;
 int barrierCount1;

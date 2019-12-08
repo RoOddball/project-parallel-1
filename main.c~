@@ -3,8 +3,8 @@
 
 int main(){
    
-  int sick,i;
-  float x,y;
+  int sick;
+  unsigned int i,mm,immunity,initialState,age;
 
   printf( "\n Please input the size of the matrix \n");
   scanf("%d",&m);
@@ -29,8 +29,8 @@ int main(){
   printf("\n quarantine is: %d \n",quarantine);
 
   turn =0;
-  int mm = m*m;
-  mainTurnSwitch = 1;
+  mm = m*m;
+  //mainTurnSwitch = 1;
   barrierCount1 = 0;
   barrierCount2 = 0;
   barrierTH = threadCount;
@@ -38,31 +38,61 @@ int main(){
   long thread;
   pthread_t *thread_handles;
 
-  thread_handles = malloc(threadCount*sizeof(pthread_t));
+  //thread_handles = (pthread_t*)malloc(threadCount*sizeof(pthread_t));
   
+  // futSubjects = (int **)malloc(m*sizeof(int *));
+  //for(i=0;i<m;i++)
+  // futSubjects[i] = (int *)malloc(m*sizeof(int));
+
+  currSubjects = (int **)malloc(m*sizeof(int *));
+  for(i=0;i<m;i++)
+    currSubjects[i] = (int *)malloc(m*2*sizeof(int));
+  /*
   neighborsInd = (int **)malloc(mm*sizeof(int *));
   for(i=0;i<mm;i++)
     neighborsInd[i] = (int *)malloc(8*sizeof(int));
   
-  futSubjects = (int **)malloc(m*sizeof(int *));
-  for(i=0;i<m;i++)
-    futSubjects[i] = (int *)malloc(m*sizeof(int));
-
-  currSubjects = (int **)malloc(m*sizeof(int *));
-  for(i=0;i<m;i++)
-    currSubjects[i] = (int *)malloc(m*sizeof(int));
-
   for(i=0;i<mm;i++)
     neighborFinder(neighborsInd,i,m);
-
+  
   for(i=0;i<mm;i++){
 
     printf("\n neighbors of %d are ",i);
     for(int j=0;j<8;j++)
       printf(" %d",neighborsInd[j+i*8]);
 	}
+*/
+  // populaceInitialize((int*)currSubjects,m);
 
-  populaceInitialize(currSubjects,m);
+  //initialize begin
+  
+  for(i=0;i<mm;i++){
+    
+    unsigned int futureState = i+mm; 
+      if(getRandomNumberFromRange(0.0,10.0)<=1){
+
+        immunity = IMMUNE_TH;
+      }else{
+
+        immunity = 0;
+      }
+      
+      if(getRandomNumberFromRange(0.0,10.0)<=1 && immunity==0){
+
+	initialState = INCUBATED_TH;
+      }else{
+
+	initialState = 0;
+      }
+      age =  round(getRandomNumberFromRange(1,99));
+		   
+      currSubjects[i] = (int*)(immunity + initialState +age);
+      currSubjects[futureState] = (int*)(immunity + initialState +age);
+      printf("\n-- subject: %d  --intialized -|- immunity is: %d -|- state is: %d -|- age is: %d --> %d future state --> %d",i,immunity,initialState,age,currSubjects[i],currSubjects[futureState]);
+    
+  }
+  //initialize end
+  thread_handles = (pthread_t*)malloc(threadCount*sizeof(pthread_t));
   
   for(thread=0; thread<threadCount; thread++)
     pthread_create(&thread_handles[thread],NULL,childTurn,(void*)thread);
@@ -71,30 +101,31 @@ int main(){
     pthread_join(thread_handles[thread],NULL);
 
   pthread_mutex_destroy(&myLock1);
-  pthread_mutex_destroy(myLock2);
-  pthread_mutex_destroy(myLock3);
-  pthread_mutex_destroy(myLock4);
+  pthread_mutex_destroy(&myLock2);
+  pthread_mutex_destroy(&myLock3);
+  pthread_mutex_destroy(&myLock4);
   free(thread_handles);
+  
   for(i=0;i<m;i++){
 
     free(currSubjects[i]);
-    free(futSubjects[i]);
+    //free(futSubjects[i]);
     
   }
 
   free(currSubjects);
-  free(futSubjects);
-  
+  //free(futSubjects);
+  /*
   for(i=0;i<mm;i++)
     free(neighborsInd[i]);
 
   free(neighborsInd);
-    
+  */
   printf("\n -- free cell :%d",&currSubjects[0][0]);
   printf("\n -- free pointer :%d",&currSubjects);
 
-    printf("\n -- free cell :%d",&futSubjects[0][1]);
-   printf("\n -- free pointer :%d",&futSubjects);
+  //printf("\n -- free cell :%d",&futSubjects[0][1]);
+  // printf("\n -- free pointer :%d",&futSubjects);
 
    return 0;
 }
